@@ -34,13 +34,13 @@ export class Tab1Page {
   constructor(public navCtrl: NavController, public toastCtrl: ToastController, public alertCtrl: AlertController) {}
 
   DeleteItem(){
-    alert("Oh darn, it's gone")
-    console.log("Deleting Item.")
+    alert("Whelp, hope you didn't need that")
+    console.log("Deleting Item: ")
   }
   
   AddItem(){
     alert("OH GOD YOU CLICKED IT")
-    console.log("Adding Item.");
+    console.log("Adding Item: ");
   }
 
 }
