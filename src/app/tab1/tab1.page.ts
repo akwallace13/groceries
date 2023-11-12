@@ -33,14 +33,37 @@ export class Tab1Page {
 
   constructor(public navCtrl: NavController, public toastCtrl: ToastController, public alertCtrl: AlertController) {}
 
-  DeleteItem(){
-    alert("Whelp, hope you didn't need that")
-    console.log("Deleting Item: ")
+  DeleteItem(item: any, index: any) {
+    console.log("Deleting Item: ", item, index);
+    const toast = this.toastCtrl.create({
+      message: 'Removing ' + item.quantity + ' ' + item.name,
+      duration: 5000,
+      position: 'top',
+    }).then(res => res.present());
   }
   
   AddItem(){
-    alert("OH GOD YOU CLICKED IT")
-    console.log("Adding Item: ");
+    console.log("Adding Item: ", this.items);
+    const prompt = this.alertCtrl.create({
+      message: "Enter Item",
+      inputs: [
+        {name: 'name',
+        placeholder: 'Name'},
+        {name: 'quantity',
+        placeholder: 'Quantity'},
+      ],
+      buttons: [
+        {text: 'Cancel',
+        handler: data => {
+          console.log('Addition Cancelled.');
+      }},
+      {text: 'Save',
+      handler: item => {
+        console.log('Item Saved.', item);
+        this.items.push(item);
+     }}
+      ]
+    }).then(res => res.present());
   }
 
 }
