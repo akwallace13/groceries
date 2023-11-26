@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { Share } from '@capacitor/share';
+import { share } from 'rxjs';
+import { EmailComposer } from '@awesome-cordova-plugins/email-composer/ngx';
+
 
 @Component({
   selector: 'app-tab1',
@@ -15,25 +19,9 @@ export class Tab1Page {
   items = [
     {name: 'Add Your Groceries',
     quantity: 'Slide Left - Delete, Slide Right - Edit, Add Item Button - Add New Item'}
-    //{
-     // name: "Milk",
-     // quantity: 2
-    //},
-    //{
-    //  name: "Eggs",
-    //  quantity: 12
-   // },
-   // {
-    //  name: "Sugar",
-    //  quantity: 1
-   // },
-   // {
-    //  name: "Coffee",
-   //   quantity: 4
-   // },
   ]
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public alertCtrl: AlertController) {}
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public alertCtrl: AlertController, private emailComposer: EmailComposer) {}
 
   //delete-works
   DeleteItem(item: any, index: any) {
@@ -41,7 +29,7 @@ export class Tab1Page {
 
     const toast = this.toastCtrl.create({
       message: 'Removing ' + item.quantity + ' ' + item.name,
-      duration: 2000,
+      duration: 3000,
       position: 'top',
     }).then(res => res.present());
 
@@ -110,4 +98,26 @@ export class Tab1Page {
     }).then(res => res.present());
   }
 
-}
+  //share - logs in console, share imported, button works, console log works
+  ShareItem(item: any, index: any) {
+    console.log("Sharing Item: ", item, index);
+
+    const toast = this.toastCtrl.create({
+      message: 'Sharing ' + item.quantity + ' ' + item.name,
+      duration: 3000,
+      position: 'top',
+    }).then(res => res.present());
+
+    
+
+    let message = "Grocery Item - Name: " + item.name + " - Quantity" + item.quantity;
+    let subject = "Shared via Groceries app";
+
+    this.ShareItem.share(message, subject).then(() => {
+      console.log("Shared successfully");
+    }).catch((error: any) => {
+      console.error("Error in sharing", error)
+    });
+    }
+    
+  }
