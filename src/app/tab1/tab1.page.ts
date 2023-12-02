@@ -113,11 +113,11 @@ export class Tab1Page {
     let message = "Grocery Item - Name: " + item.name + " - Quantity" + item.quantity;
     let subject = "Shared via Groceries app";
 
-    this.ShareItem.share(message, subject).then(() => {
-      console.log("Shared successfully");
-    }).catch((error: any) => {
-      console.error("Error in sharing", error)
-    });
-    }
+    //this.ShareItem.share(message, subject).then(() => {
+      //console.log("Shared successfully");
+    //}).catch((error: any) => {
+      //console.error("Error in sharing", error)
+    }//);
+    ;}
     
-  }
+  //}
