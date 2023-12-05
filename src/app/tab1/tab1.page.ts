@@ -5,6 +5,10 @@ import { AlertController } from '@ionic/angular';
 import { Share } from '@capacitor/share';
 import { share } from 'rxjs';
 import { EmailComposer } from '@awesome-cordova-plugins/email-composer/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
+
 
 
 @Component({
@@ -17,11 +21,26 @@ export class Tab1Page {
   title = "Grocery";
 
   items = [
-    {name: 'Add Your Groceries',
-    quantity: 'Slide Left - Delete, Slide Right - Edit, Add Item Button - Add New Item'}
+    {name: '',
+    quantity: ''}
   ]
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public alertCtrl: AlertController, private emailComposer: EmailComposer) {}
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public alertCtrl: AlertController, private emailComposer: EmailComposer, private router: Router, private storage: Storage) {}
+
+openDetails() {
+  this.router.navigateByUrl('/list/1337');
+}
+
+saveItems() {
+  this.storage.set('my-items', this.items);
+}
+
+async LoadItems() {
+  const result = await this.storage.get('my-items');
+  if (result) {
+    this.items = result;
+  }
+}
 
   //delete-works
   DeleteItem(item: any, index: any) {
@@ -34,6 +53,7 @@ export class Tab1Page {
     }).then(res => res.present());
 
     this.items.splice(index, 1);
+    this.storage.remove('my-items');
       }
     
   
@@ -60,6 +80,7 @@ export class Tab1Page {
         handler: item => {
           console.log('Item Updated.', item);
           this.items[index] = item;
+          this.storage.set('my-items', this.items);
         }}
         
       ]
@@ -93,6 +114,7 @@ export class Tab1Page {
       handler: item => {
         console.log('Item Saved.', item);
         this.items.push(item);
+        this.storage.set('my-items', this.items);
      }}
       ]
     }).then(res => res.present());
@@ -102,22 +124,21 @@ export class Tab1Page {
   ShareItem(item: any, index: any) {
     console.log("Sharing Item: ", item, index);
 
-    const toast = this.toastCtrl.create({
-      message: 'Sharing ' + item.quantity + ' ' + item.name,
-      duration: 3000,
-      position: 'top',
-    }).then(res => res.present());
+    this.emailComposer.isAvailable().then((availale: boolean) =>{if(availale) {
+      
+    }
+    });
 
-    
+    let email = {
+      to: '',
+      cc: '',
+      bcc: '',
+      subject: 'Check Out My Groceries!',
+      body: 'Here is my grocery list',
+      isHTML: true
+    }
 
-    let message = "Grocery Item - Name: " + item.name + " - Quantity" + item.quantity;
-    let subject = "Shared via Groceries app";
+    this.emailComposer.open(email);
+    };
+    }
 
-    //this.ShareItem.share(message, subject).then(() => {
-      //console.log("Shared successfully");
-    //}).catch((error: any) => {
-      //console.error("Error in sharing", error)
-    }//);
-    ;}
-    
-  //}

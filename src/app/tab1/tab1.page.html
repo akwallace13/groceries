@@ -46,9 +46,13 @@
     <ion-button id="open-toast" (click)="AddItem()" expand="block" shape="round">
       Add Item
     </ion-button>
-    <ion-toast trigger="open-toast" position="top" message="Item added" [duration]="5000"></ion-toast>
   </ion-fab>
 
+  <ion-fab slot="fixed" horizontal="beginning" vertical="bottom">
+    <ion-button (click)="LoadItems()" expand="block" shape="round">
+      Sync Items
+    </ion-button>
+  </ion-fab>
   
 </ion-content>
 

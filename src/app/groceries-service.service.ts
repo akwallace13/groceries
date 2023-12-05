@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 export interface Item {
   /*id: number,*/
@@ -13,7 +15,18 @@ const ITEMS_KEY = 'my-item';
 })
 export class GroceriesServiceService {
 
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage) {
+    this.init();
+  }
+
+  async init() {
+    await this.storage.defineDriver(CordovaSQLiteDriver);
+    await this.storage.create();
+  }
+
+  GetAllItems() {
+    return this.storage.get(ITEMS_KEY);
+  }
 
   //create
   addItem(item: Item): Promise<any> {
